@@ -53,22 +53,26 @@ $sql  = mysqli_query($conn, "SELECT * FROM sa_bans");
 <form action="ban.php" method="get">
 <div class='card-header'>
 <h5 class='card-title item-name'><img src="OIG2.jpg" width="120" height="105" /><font color='#4682B4'>Gamier NO MORE LIST BAN</font> </p></h5>
-<table style="width:70%" class="drop-down__button">
+<table style="width:88%" class="drop-down__button">
 <tr>
 <?php
     $link = "Server.xml";
     $xml = simplexml_load_file($link) -> channel;
+	
+// Obtém o endereço IP do usuário
+$ip_usuario = $_SERVER['REMOTE_ADDR'];
+
+// Exibe o endereço IP na tela
 
 
     foreach($xml -> item as $item){?>
 		
        <th><marquee><font color='white'><?php echo utf8_decode($item -> title); ?></font></marquee></th>";
 		
-        <th><font color='white'><?php echo utf8_decode($item -> playes); ?></font></th>";
-		<th><font color='white'><?php echo utf8_decode($item -> ip); ?></font></th>";
-		<th><font color='white'><?php echo utf8_decode($item -> port); ?></font></th>";
-		<th><font color='white'><?php echo utf8_decode($item -> map); ?></font></th>";
-		<th><button onclick="document.location='steam://connect/<?php echo utf8_decode($item -> ip).":".utf8_decode($item -> port); ?>'">Connect</button></th></tr>
+        <th style="width:10%"><font color='white'><?php echo utf8_decode($item -> playes); ?></font></th>";
+		<th style="width:30%"><font color='white'><?php echo $ip_usuario." : ".utf8_decode($item -> port);//echo utf8_decode($item -> ip); ?></font></th>";
+		<th><font color='white'><?php echo "Map : ".utf8_decode($item -> map); ?></font></th>";
+		<th><button onclick="document.location='steam://connect/<?php  $ip_usuario.":".utf8_decode($item -> port); ?>'">Connect</button></th></tr>
 		
    <?php } 
 ?>

@@ -57,6 +57,11 @@ $sql  = mysqli_query($conn, "SELECT * FROM sa_mutes");
 <?php
     $link = "Server.xml";
     $xml = simplexml_load_file($link) -> channel;
+	
+// Obtém o endereço IP do usuário
+$ip_usuario = $_SERVER['REMOTE_ADDR'];
+
+// Exibe o endereço IP na tela
 
 
     foreach($xml -> item as $item){?>
@@ -64,10 +69,9 @@ $sql  = mysqli_query($conn, "SELECT * FROM sa_mutes");
        <th><marquee><font color='white'><?php echo utf8_decode($item -> title); ?></font></marquee></th>";
 		
         <th><font color='white'><?php echo utf8_decode($item -> playes); ?></font></th>";
-		<th><font color='white'><?php echo utf8_decode($item -> ip); ?></font></th>";
-		<th><font color='white'><?php echo utf8_decode($item -> port); ?></font></th>";
-		<th><font color='white'><?php echo utf8_decode($item -> map); ?></font></th>";
-		<th><button onclick="document.location='steam://connect/<?php echo utf8_decode($item -> ip).":".utf8_decode($item -> port); ?>'">Connect</button></th></tr>
+		<th style="width:30%"><font color='white'><?php echo $ip_usuario." : ".utf8_decode($item -> port);//echo utf8_decode($item -> ip); ?></font></th>";
+		<th><font color='white'><?php echo "Map : ".utf8_decode($item -> map); ?></font></th>";
+		<th><button onclick="document.location='steam://connect/<?php  $ip_usuario.":".utf8_decode($item -> port); ?>'">Connect</button></th></tr>
 		
    <?php } 
 ?>
