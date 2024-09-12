@@ -14,11 +14,4 @@ gameinfo.gi line 270
 4 Downloads Server custom characters
 files characters/models/  Credits NOZB  Downloads Server custom characters : https://gamebanana.com/members/2864656 
 
-steamcommunity: https://steamcommunity.com/id/nozb1/myworkshopfiles/?p=1
-
 game\csgo\characters\models\ all files download
-
-
-		characters: https://mega.nz/file/zgoiBKBK
-
-		Key: RzSN2SfsznxBS2-a4dUkM6H_toZqAzJK74V0FNndV3s

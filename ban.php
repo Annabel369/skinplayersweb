@@ -53,34 +53,34 @@ $sql  = mysqli_query($conn, "SELECT * FROM sa_bans");
 <form action="ban.php" method="get">
 <div class='card-header'>
 <h5 class='card-title item-name'><img src="OIG2.jpg" width="120" height="105" /><font color='#4682B4'>Gamier NO MORE LIST BAN</font> </p></h5>
-<table style="width:88%" class="drop-down__button">
+<table style="width:90%" class="drop-down__button"><font color="white">
+<tr><th><font color="white">Server</font></th>	<th><font color="white">Players</font></th>	<th><font color="white">IP</font></th>	<th><font color="white">Port</font></th>	<th><font color="white">Map</font></th>	<th>.</th></tr>
 <tr>
 <?php
     $link = "Server.xml";
     $xml = simplexml_load_file($link) -> channel;
 	
-// Obtém o endereço IP do usuário
-$ip_usuario = $_SERVER['REMOTE_ADDR'];
 
 // Exibe o endereço IP na tela
 
 
-    foreach($xml -> item as $item){?>
+    foreach($xml -> item as $item){ ?>
 		
-       <th><marquee><font color='white'><?php echo utf8_decode($item -> title); ?></font></marquee></th>";
+       <th><marquee><font color='#8400ff'><?php echo utf8_decode($item -> title); ?></font></marquee></th>
+	   
 		
-        <th style="width:10%"><font color='white'><?php echo utf8_decode($item -> playes); ?></font></th>";
-		<th style="width:30%"><font color='white'><?php echo $ip_usuario." : ".utf8_decode($item -> port);//echo utf8_decode($item -> ip); ?></font></th>";
-		<th><font color='white'><?php echo "Map : ".utf8_decode($item -> map); ?></font></th>";
-		<th><button onclick="document.location='steam://connect/<?php  $ip_usuario.":".utf8_decode($item -> port); ?>'">Connect</button></th></tr>
+        <th><font color='#8400ff'><?php echo utf8_decode($item -> playes); ?></font></th>
+		<th><font color='#8400ff'><?php echo $ip_usuario.$servername." : ".utf8_decode($item -> port);//echo utf8_decode($item -> ip); ?></font></th>
+		<th><font color='#8400ff'><?php echo "Map : ".utf8_decode($item -> map); ?></font></th>
+		<th> <a href='steam://connect/<?php  echo $ip_usuario.":".utf8_decode($item -> port); ?>' class="btn btn-white btn-animate" target="_blank" rel="noopener noreferrer">Connect</a></th></tr>
 		
-   <?php } 
+   <?php } echo $servername;
 ?>
 </tr></table>
-<hr>
+<hr><br><br><br>
 <table style="width:100%" >
 <tr bgcolor=#708090>
-<div class="card-footer">
+<div class="card-footer"><p>
 <h3><center><font color='#4682B4'>LIST BAN</font></center></h3>
 <hr>
 

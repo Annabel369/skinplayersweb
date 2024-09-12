@@ -61,31 +61,25 @@ define('WEB_STYLE_DARK', 'data-bs-theme="dark"');
 <?php
     $link = "Server.xml";
     $xml = simplexml_load_file($link) -> channel;
-
-
-// Obtém o endereço IP do usuário
-$ip_usuario = $_SERVER['REMOTE_ADDR'];
+	
 
 // Exibe o endereço IP na tela
 
 
-
-
-
-    foreach($xml -> item as $item){?>
+    foreach($xml -> item as $item){ ?>
 		
-       <th><marquee><font color='white'><?php echo utf8_decode($item -> title); ?></font></marquee></th>";
+       <th><marquee><font color='#8400ff'><?php echo utf8_decode($item -> title); ?></font></marquee></th>
+	   
 		
-        <th><font color='white'><?php echo utf8_decode($item -> playes); ?></font></th>";
-		<th><font color='white'><?php echo $ip_usuario." : ";//echo utf8_decode($item -> ip); ?></font></th>";
-		<th><font color='white'><?php echo utf8_decode($item -> port); ?></font></th>";
-		<th><font color='white'><?php echo utf8_decode($item -> map); ?></font></th>";
-		<th><button onclick="document.location='steam://connect/<?php  $ip_usuario.":".utf8_decode($item -> port); ?>'">Connect</button></th></tr>
+        <th><font color='#8400ff'><?php echo utf8_decode($item -> playes); ?></font></th>
+		<th><font color='#8400ff'><?php echo $ip_usuario.$servername." : ".utf8_decode($item -> port);//echo utf8_decode($item -> ip); ?></font></th>
+		<th><font color='#8400ff'><?php echo "Map : ".utf8_decode($item -> map); ?></font></th>
+		<th> <a href='steam://connect/<?php  echo $ip_usuario.":".utf8_decode($item -> port); ?>' class="btn btn-white btn-animate" target="_blank" rel="noopener noreferrer">Connect</a></th></tr>
 		
-   <?php } 
+   <?php } echo $servername;
 ?>
-</tr>
-</table>
+</tr></table>
+<hr><br><br><br>
 <div class="card-footer">
 
 <center>
