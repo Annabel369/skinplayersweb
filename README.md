@@ -22,6 +22,8 @@
 
 2 PhP php-7.4.8-Win32-vc15-x64.zip https://php.watch/versions/7.4/releases/7.4.8
 
+PhP php-8.4.12-Win32-vc15-x64.zip https://php.watch/versions/8.4/releases/8.4.12
+
 	 edit or creat C:\php-7.4
 copy all for php 7.4 https://github.com/astral3693/skinplayersweb/blob/main/php-7.4/php.ini
 
