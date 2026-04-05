@@ -2,142 +2,135 @@
 include "config.php";
 
 if (isset($_GET["id"], $_GET["rs"])) {
-	
-$steamid = $_GET['id']; $rs = $_GET['rs'];
-
-}else{
-	
-$steamid = ''; $rs = '';
-
+    $steamid = $_GET['id']; $rs = $_GET['rs'];
+} else {
+    $steamid = ''; $rs = '';
 }
 
-   
-
-
+// Connect to 'skins' database as specified in the original logic
 $conn = new mysqli($servername, $username, $password, "skins");
-
-// Verifica a conexão
 if ($conn->connect_error) {
     die("Falha na conexão: " . $conn->connect_error);
 }
-define('WEB_STYLE_DARK', 'data-bs-theme="dark"');
 
+// Get registered users (distinct SteamIDs from wp_player_skins in mariusbd)
+$sql_users = mysqli_query($conn, "SELECT DISTINCT steamid FROM wp_player_skins ORDER BY steamid DESC LIMIT 20");
 ?>
 <!DOCTYPE html>
-<html lang="en"<?php if(WEB_STYLE_DARK) echo 'data-bs-theme="dark"'?>>
-
+<html lang="pt-BR">
 <head>
-<title>Skin Players Custom Admin & VIP</title>
-
-
-
-<meta charset="utf-8">
-<link rel="icon" href="favicon.ico">
-	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
-	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
-	<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
-	<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.min.js"></script>
-
-	<link rel="stylesheet" href="style2.css">
-	
-	<script>	
-	$(document).ready(function(){
-  $('#dropDown').click(function(){
-    $('.drop-down').toggleClass('drop-down--active');
-  });
-});</script>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Skin Players | Custom ID64</title>
+    <link rel="icon" href="favicon.ico">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="modern.css">
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 </head>
 <body>
-<?php include "home.php";  ?>
-<hr>
-<form action="insert.php" method="get">
-<div class='card-header'>
-<h5 class='card-title item-name'><font color='#4682B4'><img src="OIG2.jpg" width="120" height="105" />Skin Players Custom Admin & VIP</img></p></h5>
+    <?php include "home.php"; ?>
 
+    <div class="container py-5 animate-fade-in">
+        <header class="d-flex align-items-center justify-content-between mb-5 glass-panel p-4">
+            <div class="d-flex align-items-center gap-3">
+                <img src="OIG2.jpg" alt="Logo" class="rounded-circle" style="width: 60px; height: 60px; border: 2px solid var(--accent-indigo);">
+                <div>
+                    <h1 class="h4 mb-0 text-gradient fw-bold">CUSTOM ID64 MANAGEMENT</h1>
+                    <p class="text-secondary small mb-0">Direct SteamID Registration & Admin Tools (Skins Database)</p>
+                </div>
+            </div>
+        </header>
 
-<table style="width:90%" class="drop-down__button"><font color="white">
-<tr><th><font color="white">Server</font></th>	<th><font color="white">Players</font></th>	<th><font color="white">IP</font></th>	<th><font color="white">Port</font></th>	<th><font color="white">Map</font></th>	<th>.</th></tr>
-<tr>
-<?php
-    $link = "Server.xml";
-    $xml = simplexml_load_file($link) -> channel;
-	
+        <div class="row g-4">
+            <div class="col-lg-5">
+                <!-- Registration Card -->
+                <div class="glass-panel p-4 mb-4">
+                    <div class="d-flex align-items-center gap-2 mb-4">
+                        <span class="accent-indigo h4 mb-0">■</span>
+                        <h2 class="h5 mb-0 text-uppercase fw-bold">Manual Registration</h2>
+                    </div>
 
-// Exibe o endereço IP na tela
+                    <form action="insert.php" method="get">
+                        <div class="mb-4">
+                            <label for="steamid" class="form-label fw-bold small accent-indigo">STEAMID64</label>
+                            <input type="number" name="steamid" id="steamid" class="form-control" placeholder="76561198XXXXXXXXX" required>
+                            <div class="form-text text-secondary" style="font-size: 0.7rem;">Enter the full 17-digit SteamID64 for the user.</div>
+                        </div>
 
+                        <?php if ($rs): ?>
+                            <div class="alert alert-info bg-opacity-10 border-info text-info small mb-4 py-2">
+                                Status: <?php echo $rs; ?>
+                            </div>
+                        <?php endif; ?>
 
-    foreach($xml -> item as $item){ ?>
-		
-       <th><marquee><font color='#8400ff'><?php echo utf8_decode($item -> title); ?></font></marquee></th>
-	   
-		
-        <th><font color='#8400ff'><?php echo utf8_decode($item -> playes); ?></font></th>
-		<th><font color='#8400ff'><?php echo $ip_usuario.$servername." : ".utf8_decode($item -> port);//echo utf8_decode($item -> ip); ?></font></th>
-		<th><font color='#8400ff'><?php echo "Map : ".utf8_decode($item -> map); ?></font></th>
-		<th> <a href='steam://connect/<?php  echo $ip_usuario.":".utf8_decode($item -> port); ?>' class="btn btn-white btn-animate" target="_blank" rel="noopener noreferrer">Connect</a></th></tr>
-		
-   <?php } echo $servername;
-?>
-</tr></table>
-<hr><br><br><br>
-<div class="card-footer">
+                        <div class="d-grid">
+                            <button type="submit" class="btn-modern justify-content-center">
+                                REGISTER STEAMID
+                            </button>
+                        </div>
+                    </form>
+                </div>
 
-<center>
-<table style="width:50%" >
+                <div class="glass-panel p-4">
+                    <div class="d-flex align-items-center gap-2 mb-3">
+                        <span class="accent-cyan h4 mb-0">i</span>
+                        <h2 class="h6 mb-0 text-uppercase fw-bold">Useful Commands</h2>
+                    </div>
+                    <div class="bg-black bg-opacity-30 p-3 rounded" style="font-family: monospace; font-size: 0.8rem;">
+                        <code class="d-block text-secondary mb-2">!rcon css_addadmin <span class="accent-indigo">ID64</span> <span class="accent-purple">Name</span> #group 99 99999</code>
+                        <code class="d-block text-secondary">!lr_giveexp <span class="accent-purple">Name</span> 58000</code>
+                    </div>
+                </div>
+            </div>
 
+            <div class="col-lg-7">
+                <!-- Registered List -->
+                <div class="glass-panel p-4 h-100">
+                    <div class="d-flex align-items-center gap-2 mb-4">
+                        <span class="accent-purple h4 mb-0">■</span>
+                        <h2 class="h5 mb-0 text-uppercase fw-bold">Registered Custom IDs</h2>
+                    </div>
 
-			<tr>
-			<th>
-			<label for="cars"><font color='#4682B4'>Id steam64:</font></label>
-			
-			<input type="number" name="steamid" id="steamid" size="18"/>
+                    <div class="overflow-auto" style="max-height: 500px;">
+                        <table class="modern-table mt-0">
+                            <thead>
+                                <tr>
+                                    <th>Registered SteamID</th>
+                                    <th class="text-end">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php if ($sql_users && mysqli_num_rows($sql_users) > 0): ?>
+                                    <?php while($user = mysqli_fetch_array($sql_users)): ?>
+                                        <tr>
+                                            <td>
+                                                <a href="https://steamcommunity.com/profiles/<?php echo $user['steamid']; ?>" target="_blank" class="text-decoration-none accent-indigo fw-bold">
+                                                    <?php echo $user['steamid']; ?>
+                                                </a>
+                                            </td>
+                                            <td class="text-end">
+                                                <a href="index.php?id=<?php echo $user['steamid']; ?>" class="btn-modern py-1 px-3" style="font-size: 0.75rem;">
+                                                    USE AS ADMIN
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    <?php endwhile; ?>
+                                <?php else: ?>
+                                    <tr>
+                                        <td colspan="2" class="text-center text-secondary py-5">No SteamIDs registered yet.</td>
+                                    </tr>
+                                <?php endif; ?>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-			<input type="submit"></th>
-				  
-				  <th>
-				 <?php  echo "<font color=green>".$rs."</font><br/><font color='#4682B4'>Steam</font> " .$steamid;?>
-    </th>
-			
-</tr>
-
-
-</table></center>
-</div>
-</div>
-
-
-</form>
-<div style='text-align:left'>
-<font color='#4682B4'>Useful commands:</font><p><textarea cols="70" rows="8" disabled>!rcon pmc_resynccache
-!modeladmin reload
-!rcon sv_cheats 1
-thirdperson
-!rcon sv_cheats 0
-!rcon css_addadmin 76561198115162119 Astral #pmc/admin 99 99999
-!lr_giveexp Astral  58000
-!rcon mp_roundtime 33 (Ajusta o tempo dos rounds)
-!rcon mp_roundtime_defuse (Altera o tempo de detonação da bomba)
-!rcon mp_roundtime_hostage (Altera o tempo de dos rounds para jogos com reféns)
-!rcon r_drawOtherModels 2 (Permitem ver os modelos atrás de paredes e outras texturas)
-!rcon mp_buy_anywhere 1 (Permite que você compre em qualquer lugar do mapa)
-!rcon mp_maxmoney (Altera o máximo de dinheiro que um jogador pode ter)
-!rcon mp_startmoney (Ajusta o dinheiro inicial na rodada)
-!rcon mp_warmup_end (Retira o tempo de aquecimento antes do início da rodada)
-!rcon bot_kick (Remove os bots da partida) (editado)
-</textarea></p></div>
-<hr>
-
-<!--LINK JQUERY-->
-<script type="text/javascript" src="skins.js"></script>
-<!--PERSONAL SCRIPT JavaScript-->
-
-
-<div class="container">
-		<footer class="d-flex flex-wrap justify-content-between align-items-center py-3 my-4 border-top">
-			<div class="col-md-4 d-flex align-items-center">
-				<span class="mb-3 mb-md-0 text-body-secondary"><font color='#4682B4'>© 2024 GAMIER NO MORE Web v2.0 by Astral</font></span>
-			</div>
-		</footer>
-	</div>
+        <footer class="mt-5 pt-4 border-top border-opacity-10 text-center">
+            <span class="text-secondary small">© 2024 SKIN PLAYERS Web v2.0 | Skins Database Logic System</span>
+        </footer>
+    </div>
 </body>
-<html>
+</html>

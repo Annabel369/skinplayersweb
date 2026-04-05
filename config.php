@@ -1,7 +1,11 @@
 <?php
-$ip_usuario = $_SERVER["HTTP_HOST"];
-$servername = $_SERVER["HTTP_X_REAL_IP"];
+// Unified IP from Counter-Strike_agent (Working Configuration)
+$ip_usuario = '26.43.61.19';
+$servername = 'localhost'; // Database host
 $username = "root";
 $password = "0073007";
-$dbname = "playermodelchanger";
+$dbname = "mariusbd";
+
+// RCON configuration for connect links
+$cs2_port = 27018;
 ?>

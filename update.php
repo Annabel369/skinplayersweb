@@ -21,8 +21,8 @@ $ct_permission_bypass = 0;
 
 
 if ($steamid != ''){
-$sql = "UPDATE playermodelchanger SET t_model='$t_model',ct_model='$ct_model',img='$img' WHERE steamid=$steamid";
-if ($conn->query($sql) === TRUE) {
+    $sql = "UPDATE playermodelchanger SET t_model='$t_model',ct_model='$ct_model' WHERE steamid='$steamid'";
+    if ($conn->query($sql) === TRUE) {
     $rs = "Registration Updated Successfully";
 } else {
     $rs = "Error updating the registry:" . $conn->error;

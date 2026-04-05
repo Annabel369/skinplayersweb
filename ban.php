@@ -1,126 +1,95 @@
 <?php
 include "config.php";
 
-if (isset($_GET["id"], $_GET["rs"], $_GET["t_model"], $_GET["ct_model"])) {
-	
-$steamid = $_GET['id']; $rs = $_GET['rs']; $t_model =  $_GET['t_model']; $ct_model =  $_GET['ct_model'];
-
-}else{
-	
-$steamid = ''; $rs = ''; $t_model =  ''; $ct_model =  '';
-
+if (isset($_GET["id"], $_GET["rs"])) {
+    $steamid = $_GET['id']; $rs = $_GET['rs'];
+} else {
+    $steamid = ''; $rs = '';
 }
 
-   
-
-
 $conn = new mysqli($servername, $username, $password, $dbname);
-
-// Verifica a conexão
 if ($conn->connect_error) {
     die("Falha na conexão: " . $conn->connect_error);
 }
-define('WEB_STYLE_DARK', 'data-bs-theme="dark"');
-$sql  = mysqli_query($conn, "SELECT * FROM sa_bans");
+
+// Logic synchronized with AdminControl: Using 'bans' table
+$sql = mysqli_query($conn, "SELECT CAST(steamid AS CHAR) AS steamid, reason, unbanned, timestamp FROM bans ORDER BY timestamp DESC LIMIT 50");
 ?>
-
 <!DOCTYPE html>
-<html lang="en"<?php if(WEB_STYLE_DARK) echo 'data-bs-theme="dark"'?>>
-
+<html lang="pt-BR">
 <head>
-<title>LIST BAN Gamier NO MORE</title>
-
-<meta charset="utf-8">
-	<link rel="icon" href="favicon.ico">
-	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
-	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
-	<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
-	<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.min.js"></script>
-	<link rel="stylesheet" href="style3.css">
-	<link rel="stylesheet" href="style2.css">
-	
-	
-<script>	
-	$(document).ready(function(){
-  $('#dropDown').click(function(){
-    $('.drop-down').toggleClass('drop-down--active');
-  });
-});</script>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Skin Players | Ban List</title>
+    <link rel="icon" href="favicon.ico">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="modern.css">
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 </head>
 <body>
-<?php include "home.php";  ?>
-<hr>
-<form action="ban.php" method="get">
-<div class='card-header'>
-<h5 class='card-title item-name'><img src="OIG2.jpg" width="120" height="105" /><font color='#4682B4'>Gamier NO MORE LIST BAN</font> </p></h5>
-<table style="width:90%" class="drop-down__button"><font color="white">
-<tr><th><font color="white">Server</font></th>	<th><font color="white">Players</font></th>	<th><font color="white">IP</font></th>	<th><font color="white">Port</font></th>	<th><font color="white">Map</font></th>	<th>.</th></tr>
-<tr>
-<?php
-    $link = "Server.xml";
-    $xml = simplexml_load_file($link) -> channel;
-	
+    <?php include "home.php"; ?>
 
-// Exibe o endereço IP na tela
+    <div class="container py-5 animate-fade-in">
+        <header class="d-flex align-items-center justify-content-between mb-5 glass-panel p-4">
+            <div class="d-flex align-items-center gap-3">
+                <img src="OIG2.jpg" alt="Logo" class="rounded-circle" style="width: 60px; height: 60px; border: 2px solid var(--accent-indigo);">
+                <div>
+                    <h1 class="h4 mb-0 text-gradient fw-bold">BAN LIST</h1>
+                    <p class="text-secondary small mb-0">Unified Server Punishment Records (AdminControl Sync)</p>
+                </div>
+            </div>
+        </header>
 
+        <section class="glass-panel p-4 overflow-auto">
+            <div class="d-flex align-items-center justify-content-between mb-4">
+                <div class="d-flex align-items-center gap-2">
+                    <span class="accent-indigo h4 mb-0">■</span>
+                    <h2 class="h5 mb-0 text-uppercase fw-bold">Recent Bans</h2>
+                </div>
+            </div>
 
-    foreach($xml -> item as $item){ ?>
-		
-       <th><marquee><font color='#8400ff'><?php echo utf8_decode($item -> title); ?></font></marquee></th>
-	   
-		
-        <th><font color='#8400ff'><?php echo utf8_decode($item -> playes); ?></font></th>
-		<th><font color='#8400ff'><?php echo $ip_usuario.$servername." : ".utf8_decode($item -> port);//echo utf8_decode($item -> ip); ?></font></th>
-		<th><font color='#8400ff'><?php echo "Map : ".utf8_decode($item -> map); ?></font></th>
-		<th> <a href='steam://connect/<?php  echo $ip_usuario.":".utf8_decode($item -> port); ?>' class="btn btn-white btn-animate" target="_blank" rel="noopener noreferrer">Connect</a></th></tr>
-		
-   <?php } echo $servername;
-?>
-</tr></table>
-<hr><br><br><br>
-<table style="width:100%" >
-<tr bgcolor=#708090>
-<div class="card-footer"><p>
-<h3><center><font color='#4682B4'>LIST BAN</font></center></h3>
-<hr>
+            <table class="modern-table">
+                <thead>
+                    <tr>
+                        <th>SteamID</th>
+                        <th>Reason</th>
+                        <th>Date</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php if ($sql && mysqli_num_rows($sql) > 0): ?>
+                        <?php while($resultado = mysqli_fetch_array($sql)): ?>
+                            <tr>
+                                <td>
+                                    <a href="https://steamcommunity.com/profiles/<?php echo $resultado['steamid']; ?>" target="_blank" class="fw-bold text-decoration-none accent-indigo">
+                                        <?php echo $resultado['steamid']; ?>
+                                    </a>
+                                </td>
+                                <td><span class="small"><?php echo $resultado['reason'] ?: 'No reason provided'; ?></span></td>
+                                <td><span class="small text-secondary"><?php echo $resultado['timestamp']; ?></span></td>
+                                <td>
+                                    <?php if ($resultado['unbanned'] == 0): ?>
+                                        <span class="badge bg-danger bg-opacity-25 text-danger border border-danger border-opacity-25">ACTIVE</span>
+                                    <?php else: ?>
+                                        <span class="badge bg-success bg-opacity-25 text-success border border-success border-opacity-25">UNBANNED</span>
+                                    <?php endif; ?>
+                                </td>
+                            </tr>
+                        <?php endwhile; ?>
+                    <?php else: ?>
+                        <tr>
+                            <td colspan="4" class="text-center text-secondary py-5">No records found in 'bans' table.</td>
+                        </tr>
+                    <?php endif; ?>
+                </tbody>
+            </table>
+        </section>
 
-<th>Player_name</th><th>Player_steamid</th>	<th>Player_ip</th>	<th>Admin_steamid</th>	<th>Admin_name</th>	<th>Reason</th>	<th>Duration</th>	<th>Ends</th><th>Status</th>
-</div></tr>
-
-<div class="drop-down">
-<?php echo $steamid;
-              while($resultado = mysqli_fetch_array($sql)){  
-			  echo "<tr><th><font color='#4682B4'>".$resultado['player_name']."</font></th>";  
-			  echo "<th><font color='#4682B4'><a href='https://steamcommunity.com/profiles/".$resultado['player_steamid']."'>".$resultado['player_steamid']."</a></th>";
-			  echo "<th><font color='#4682B4'>".$resultado['player_ip']."</font></th>";
-			  echo "<th><font color='#4682B4'><a href='https://steamcommunity.com/profiles/".$resultado['admin_steamid']."'>".$resultado['player_steamid']."</a></th>";
-			  echo "<th><font color='#4682B4'>".$resultado['admin_name']."</font></th>";
-			  echo "<th><font color='#4682B4'>".$resultado['reason']."</font></th>";
-			  echo "<th><font color='#4682B4'>".$resultado['duration']."</font></th>";
-			  echo "<th><font color='#4682B4'>".$resultado['ends']."</font></th>";
-			  echo "<th><font color='#4682B4'>".$resultado['status']."</font></th></tr>";
-			  
-			  } 
-			  ?> 
-
-<input type='hidden' id='t_model' name='t_model' value=''>
-<input type='hidden' id='ct_model' name='ct_model' value=''>
-
-</table>
-</form>
-<hr>
-
-<!--LINK JQUERY-->
-<script type="text/javascript" src="skins.js"></script>
-<!--PERSONAL SCRIPT JavaScript-->
-
-
-<div class="container">
-		<footer class="d-flex flex-wrap justify-content-between align-items-center py-3 my-4 border-top">
-			<div class="col-md-4 d-flex align-items-center">
-				<span class="mb-3 mb-md-0 text-body-secondary"><font color='#4682B4'>© 2024 GAMIER NO MORE Web v2.0 by Astral</font></span>
-			</div>
-		</footer>
-	</div>
+        <footer class="mt-5 pt-4 border-top border-opacity-10 text-center">
+            <span class="text-secondary small">© 2024 SKIN PLAYERS Web v2.0 | AdminControl Logic System</span>
+        </footer>
+    </div>
 </body>
-<html>
+</html>
