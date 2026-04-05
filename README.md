@@ -1,5 +1,6 @@
  for © 2024 GAMIER NO MORE Web v2.0 by Astral 
-![image](https://github.com/astral3693/skinplayersweb/assets/149034744/dbcab622-2a24-4a00-ad8c-fae3d1f1569d)
+<img width="1880" height="899" alt="image" src="https://github.com/user-attachments/assets/4e810f31-100e-4eb9-a7be-a2e60e68f29e" />
+
 # Dependencies Plugins CS2 C#
 
 1  MetaModSource 2.0 CS2 https://www.metamodsource.net/downloads.php/?branch=maste
